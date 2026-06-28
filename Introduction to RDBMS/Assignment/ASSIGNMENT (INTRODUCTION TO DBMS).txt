@@ -30,23 +30,23 @@ This creates a **transitive dependency**:
 
 * EMPNO → DEPTNO → DNAME, LOC
 
-Since **DNAME** and **LOC** depend on **DEPTNO** rather than directly on **EMPNO**, the table violates 3NF.
+Since "DNAME" and "LOC" depend on "DEPTNO" rather than directly on "EMPNO", the table violates 3NF.
 
-### Step 3: Normalize to Third Normal Form (3NF)
+# Step 3: Normalize to Third Normal Form (3NF)
 
 Split the table into two relations:
 
-**EMPLOYEE**
+*EMPLOYEE
 
 | EMPNO | ENAME | SAL   | DEPTNO |
 | ----- | ----- | ----- | ------ |
 | 101   | John  | 50000 | 10     |
 | 102   | Alice | 60000 | 20     |
 
-* **Primary Key:** EMPNO
-* **Foreign Key:** DEPTNO
+* Primary Key: EMPNO
+* Foreign Key: DEPTNO
 
-*DEPARTMENT*
+*DEPARTMENT
 
 | DEPTNO | DNAME | LOC    |
 | ------ | ----- | ------ |
@@ -64,7 +64,7 @@ Split the table into two relations:
 
 # Conclusion
 
-The given table is in **2NF but not in 3NF** because of the transitive dependency **DEPTNO → DNAME, LOC**. By separating department details into a **DEPARTMENT** table and keeping employee details in an **EMPLOYEE** table, the schema is normalized to **Third Normal Form (3NF).
+The given table is in 2NF but not in 3NF because of the transitive dependency DEPTNO → DNAME, LOC. By separating department details into a DEPARTMENT table and keeping employee details in an EMPLOYEE table, the schema is normalized to Third Normal Form (3NF).
 
 QUESTION 2-	S	 Observe the structures of a given STUDENT table as below and suggest if this table can be further Normalized
 ROLLNO, NAME,AGE,EXAM, MARKS, GRADE
@@ -78,12 +78,12 @@ Answer 2-
 
 # Step 1: Identify the Current Normal Form
 
-The table is in **First Normal Form (1NF)** because:
+The table is in First Normal Form (1NF) because:
 
 * All attributes contain atomic (single) values.
 * There are no repeating groups or multivalued attributes.
 
-However, it is **not in Second Normal Form (2NF)** if a student can appear for multiple exams. In that case, the composite primary key is (ROLLNO, EXAM).
+However, it is not in Second Normal Form (2NF) if a student can appear for multiple exams. In that case, the composite primary key is (ROLLNO, EXAM).
 
 # Step 2: Why is it not in 2NF?
 
