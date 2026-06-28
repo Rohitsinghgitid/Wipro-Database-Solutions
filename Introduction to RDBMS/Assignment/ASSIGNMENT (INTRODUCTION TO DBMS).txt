@@ -1,0 +1,190 @@
+			ASSIGNMENT (INTRODUCTION TO DBMS)
+
+QUESTION 1-	M	Observe the structures of a given EMPLOYEE table as below and suggest if this table can be further Normalized
+EMPNO,ENAME,SAL,DEPTNO,DNAME,LOC
+Explain what normal form this table is and how you can make this into next normal form Normalization
+
+ANSWER 1-
+The table:
+
+| EMPNO | ENAME | SAL | DEPTNO | DNAME | LOC |
+| ----- | ----- | --- | ------ | ----- | --- |
+
+# Step 1: Identify the Current Normal Form
+
+This table is in **Second Normal Form (2NF)** (and also satisfies 1NF) because:
+
+* All values are atomic (1NF).
+* The primary key is **EMPNO** (a single attribute), so there are no partial dependencies.
+
+However, it is **not in Third Normal Form (3NF)**.
+
+# Step 2: Why is it not in 3NF?
+
+The functional dependencies are:
+
+* EMPNO → ENAME, SAL, DEPTNO
+* DEPTNO → DNAME, LOC
+
+This creates a **transitive dependency**:
+
+* EMPNO → DEPTNO → DNAME, LOC
+
+Since **DNAME** and **LOC** depend on **DEPTNO** rather than directly on **EMPNO**, the table violates 3NF.
+
+### Step 3: Normalize to Third Normal Form (3NF)
+
+Split the table into two relations:
+
+**EMPLOYEE**
+
+| EMPNO | ENAME | SAL   | DEPTNO |
+| ----- | ----- | ----- | ------ |
+| 101   | John  | 50000 | 10     |
+| 102   | Alice | 60000 | 20     |
+
+* **Primary Key:** EMPNO
+* **Foreign Key:** DEPTNO
+
+*DEPARTMENT*
+
+| DEPTNO | DNAME | LOC    |
+| ------ | ----- | ------ |
+| 10     | Sales | Mumbai |
+| 20     | HR    | Delhi  |
+
+* Primary Key: DEPTNO
+
+# Benefits of 3NF
+
+* Eliminates data redundancy.
+* Prevents update, insertion, and deletion anomalies.
+* Stores department information only once.
+* Improves data consistency and integrity.
+
+# Conclusion
+
+The given table is in **2NF but not in 3NF** because of the transitive dependency **DEPTNO → DNAME, LOC**. By separating department details into a **DEPARTMENT** table and keeping employee details in an **EMPLOYEE** table, the schema is normalized to **Third Normal Form (3NF).
+
+QUESTION 2-	S	 Observe the structures of a given STUDENT table as below and suggest if this table can be further Normalized
+ROLLNO, NAME,AGE,EXAM, MARKS, GRADE
+Explain what normal form this table is and how you can make this into next normal form	Normalization
+
+Answer 2-
+# Given STUDENT Table
+
+| ROLLNO | NAME | AGE | EXAM | MARKS | GRADE |
+| ------ | ---- | --- | ---- | ----- | ----- |
+
+# Step 1: Identify the Current Normal Form
+
+The table is in **First Normal Form (1NF)** because:
+
+* All attributes contain atomic (single) values.
+* There are no repeating groups or multivalued attributes.
+
+However, it is **not in Second Normal Form (2NF)** if a student can appear for multiple exams. In that case, the composite primary key is (ROLLNO, EXAM).
+
+# Step 2: Why is it not in 2NF?
+
+The functional dependencies are:
+
+* (ROLLNO, EXAM) → MARKS, GRADE
+* ROLLNO → NAME, AGE
+
+Here, "NAME" and "AGE" depend only on "ROLLNO", which is part of the composite key. This is a partial dependency, violating 2NF.
+
+# Step 3: Normalize to Second Normal Form (2NF)
+
+Split the table into two tables:
+
+# STUDENT
+
+| ROLLNO | NAME  | AGE |
+| ------ | ----- | --- |
+| 101    | Rahul | 20  |
+| 102    | Priya | 21  |
+
+* Primary Key: ROLLNO
+
+# STUDENT_EXAM
+
+| ROLLNO | EXAM | MARKS | GRADE |
+| ------ | ---- | ----- | ----- |
+| 101    | DBMS | 85    | A     |
+| 101    | OS   | 78    | B     |
+| 102    | DBMS | 91    | A+    |
+
+* Composite Primary Key: (ROLLNO, EXAM)
+* Foreign Key: ROLLNO references STUDENT
+
+# Benefits of 2NF
+
+* Removes partial dependencies.
+* Reduces data redundancy.
+* Prevents update, insertion, and deletion anomalies.
+* Student information is stored only once.
+
+# Conclusion
+
+The given STUDENT table is in 1NF but not in 2NF because "NAME" and "AGE" depend only on "ROLLNO", which is part of the composite key "(ROLLNO, EXAM)". By separating student details and exam details into two tables, the database is normalized to Second Normal Form (2NF).
+
+QUESTION 3-S	 Observe the structure of a given EMPLOYEE table and suggest what kind of problem this table has and how to solve the problem
+EMPNO,PROJECT_NO,NO_OF_DAYS,CUSTOMERNAME
+In the above table EMPNO AND PROJECT_NO both are together a composite primary key 	Normalization
+
+
+Answer 3-
+# Given EMPLOYEE Table
+
+| EMPNO | PROJECT_NO | NO_OF_DAYS | CUSTOMERNAME |
+| ----- | ---------- | ---------- | ------------ |
+
+*Composite Primary Key: "(EMPNO, PROJECT_NO)"
+
+# Problem in the Table
+
+The table is in First Normal Form (1NF) but not in Second Normal Form (2NF) because it has a partial dependency.
+
+# Functional Dependencies
+
+* (EMPNO, PROJECT_NO) → NO_OF_DAYS
+* PROJECT_NO → CUSTOMERNAME
+
+Here, "CUSTOMERNAME" depends only on "PROJECT_NO", which is part of the composite primary key, not on the entire key. This is a partial dependency, causing data redundancy and update anomalies.
+
+# Solution (Normalize to 2NF)
+
+Split the table into two tables:
+
+# EMPLOYEE_PROJECT
+
+| EMPNO | PROJECT_NO | NO_OF_DAYS |
+| ----- | ---------- | ---------- |
+| 101   | P1         | 20         |
+| 101   | P2         | 15         |
+| 102   | P1         | 10         |
+
+* Primary Key: (EMPNO, PROJECT_NO)
+
+#### PROJECT
+
+| PROJECT_NO | CUSTOMERNAME  |
+| ---------- | ------------- |
+| P1         | ABC Ltd.      |
+| P2         | XYZ Pvt. Ltd. |
+
+* Primary Key: PROJECT_NO
+
+# Benefits
+
+* Eliminates data redundancy.
+* Prevents update, insertion, and deletion anomalies.
+* Stores customer information only once for each project.
+* Brings the database into **Second Normal Form (2NF)**.
+
+# Conclusion
+
+The given table has a partial dependency, so it is not in 2NF. By separating PROJECT details into a separate table, the schema is normalized to Second Normal Form (2NF).
+
+	
